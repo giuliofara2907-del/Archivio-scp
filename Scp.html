@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCP Foundation - Hub Centrale</title>
+    <style>
+        body { 
+            background-color: #0a0a0a; 
+            color: #dcdcdc; 
+            font-family: 'Courier New', Courier, monospace; 
+            margin: 0; 
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Header e Logo */
+        header { 
+            text-align: center; 
+            border-bottom: 3px solid #990000; 
+            padding-bottom: 30px; 
+            margin-bottom: 30px;
+        }
+        .main-logo {
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(153, 0, 0, 0.5);
+            margin-bottom: 15px;
+        }
+
+        /* Box di Ricerca */
+        .search-container {
+            max-width: 600px; 
+            margin: 20px auto; 
+            padding: 25px; 
+            background: #111; 
+            border: 2px solid #444; 
+            box-shadow: 0 0 15px #990000;
+        }
+        .search-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        select, input { 
+            background: #000; 
+            color: #00ff00; 
+            border: 1px solid #00ff00; 
+            padding: 10px; 
+            font-family: 'Courier New'; 
+        }
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            background: #990000; 
+            color: white; 
+            border: none; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-transform: uppercase;
+        }
+        button:hover { background: #660000; }
+
+        /* Classi SCP */
+        .classes-grid {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+            margin: 40px 0;
+        }
+        .class-card { 
+            padding: 15px; 
+            border-radius: 5px; 
+            text-align: center; 
+            border-width: 2px;
+            border-style: solid;
+        }
+        .safe { border-color: #2e7d32; background: rgba(46, 125, 50, 0.1); }
+        .euclid { border-color: #f9a825; background: rgba(249, 168, 37, 0.1); }
+        .keter { border-color: #c62828; background: rgba(198, 40, 40, 0.1); }
+        .thaumiel { border-color: #4527a0; background: rgba(69, 39, 160, 0.1); }
+
+        /* Footer */
+        footer { 
+            margin-top: 60px; 
+            padding: 20px; 
+            border-top: 1px solid #333; 
+            font-size: 0.75em; 
+            color: #666; 
+            text-align: center; 
+        }
+        a { color: #990000; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://via.placeholder.com/300x300?text=SCP+CENTRAL+ARCHIVES" alt="SCP Logo" class="main-logo">
+    <h1>ARCHIVIO CENTRALE SCP</h1>
+    <p style="color: #990000;">SISTEMA DI AGGREGAZIONE DATI LIVELLO 4</p>
+</header>
+
+<section class="search-container">
+    <h2 style="color: #990000; text-align: center; letter-spacing: 2px; margin-top: 0;">TERMINALE DI ACCESSO</h2>
+    <div class="search-row">
+        <select id="langSelect">
+            <option value="en">INT (EN)</option>
+            <option value="it">SITO-ACCADEMIA (IT)</option>
+        </select>
+        <input type="text" id="scpInput" placeholder="ID Soggetto (es. 173)" style="flex-grow: 1;">
+    </div>
+    <button onclick="advancedSearch()">Esegui Decriptazione</button>
+    <div id="statusUpdate" style="margin-top: 15px; font-size: 0.8em; color: #555; text-align: center;">In attesa di credenziali...</div>
+</section>
+
+<div style="text-align: center; margin: 20px 0;">
+    <a href="https://scp-wiki.wikidot.com/random:random-scp" target="_blank" style="color: #aaa; text-decoration: underline; font-size: 0.9em;">Apri un file anomalo casuale</a>
+</div>
+
+<section class="classes-grid">
+    <div class="class-card safe">
+        <h3 style="color: #2e7d32;">SAFE</h3>
+        <p>Contenimento semplice e sicuro.</p>
+    </div>
+    <div class="class-card euclid">
+        <h3 style="color: #f9a825;">EUCLID</h3>
+        <p>Comportamento imprevedibile.</p>
+    </div>
+    <div class="class-card keter">
+        <h3 style="color: #c62828;">KETER</h3>
+        <p>Pericolo critico di fuga.</p>
+    </div>
+    <div class="class-card thaumiel">
+        <h3 style="color: #b39ddb;">THAUMIEL</h3>
+        <p>Strumento di contenimento.</p>
+    </div>
+</section>
+
+<footer>
+    <p>I contenuti della Fondazione SCP sono rilasciati sotto licenza <b>CC BY-SA 3.0</b>.</p>
+    <p>Sito di aggregazione non ufficiale. Sicurezza. Contenimento. Protezione.</p>
+</footer>
+
+<script>
+function advancedSearch() {
+    const input = document.getElementById('scpInput').value.trim();
+    const lang = document.getElementById('langSelect').value;
+    const status = document.getElementById('statusUpdate');
+    const scpNumber = input.replace(/\D/g, '');
+    
+    if (scpNumber) {
+        status.innerHTML = "<span style='color: #00ff00;'>ACCESSO AUTORIZZATO...</span>";
+        const formattedNum = scpNumber.padStart(3, '0');
+        const url = lang === 'it' 
+            ? `https://fondazionescp.wikidot.com/scp-${formattedNum}` 
+            : `https://scp-wiki.wikidot.com/scp-${formattedNum}`;
+        
+        setTimeout(() => {
+            window.open(url, '_blank');
+            status.innerText = "In attesa di credenziali...";
+        }, 800);
+    } else {
+        status.innerHTML = "<span style='color: #ff0000;'>ERRORE: ID NON VALIDO</span>";
+    }
+}
+</script>
+
+</body>
+</html>
